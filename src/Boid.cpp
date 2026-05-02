@@ -1,0 +1,116 @@
+#include "Boid.hpp"
+#include <random>
+
+namespace {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<float> dist(-1.0f, 1.0f);
+}
+
+Boid::Boid(float x, float y) : 
+    position(x, y),
+    velocity(dist(gen), dist(gen)),
+    acceleration(0, 0),
+    maxSpeed(4.0f),
+    maxForce(0.1f) {}
+
+void Boid::applyForce(const Vector2D& force) {
+    acceleration += force;
+}
+
+void Boid::update() {
+    velocity += acceleration;
+    velocity.limit(maxSpeed);
+    position += velocity;
+    acceleration *= 0;
+}
+
+void Boid::flock(const std::vector<Boid>& boids) {
+    Vector2D sep = separate(boids);
+    Vector2D ali = align(boids);
+    Vector2D coh = cohere(boids);
+
+    sep *= 1.5f;
+    ali *= 1.0f;
+    coh *= 1.0f;
+
+    applyForce(sep);
+    applyForce(ali);
+    applyForce(coh);
+}
+
+Vector2D Boid::separate(const std::vector<Boid>& boids) {
+    float desiredSeparation = 25.0f;
+    Vector2D steer = Vector2D(0, 0);
+    int count = 0;
+
+    for (const auto &other : boids){
+        float d = position.distance(other.position);
+        if (d > 0 && d < desiredSeparation) {
+            Vector2D esc = position - other.position;
+            esc.normalize();
+            esc /= d;
+            steer += esc;
+            count++;
+        }
+    }
+
+    if (count > 0) {
+        steer /= count;
+        steer.normalize();
+        steer *= maxSpeed;
+        steer -= velocity;
+        steer.limit(maxForce);
+    }
+
+    return steer;
+}
+
+Vector2D Boid::align(const std::vector<Boid>& boids) {
+    float neighborDist = 50.0f;
+    Vector2D steer = Vector2D(0, 0);
+    int count = 0;
+
+    for (const auto &other : boids){
+        float d = position.distance(other.position);
+        if (d > 0 && d < neighborDist) {
+            steer += other.velocity;
+            count++;
+        }
+    }
+
+    if (count > 0) {
+        steer /= count;
+        steer.normalize();
+        steer *= maxSpeed;
+        steer -= velocity;
+        steer.limit(maxForce);
+    }
+
+    return steer;
+}
+
+Vector2D Boid::cohere(const std::vector<Boid>& boids) {
+    float neighborDist = 50.0f;
+    Vector2D steer = Vector2D(0, 0);
+    int count = 0;
+
+    for (const auto &other : boids){
+        float d = position.distance(other.position);
+        if (d > 0 && d < neighborDist) {
+            steer += other.position;
+            count++;
+        }
+    }
+
+    if (count > 0) {
+        steer /= count;
+        steer -= position;
+        steer.normalize();
+        steer *= maxSpeed;
+        steer -= velocity;
+        steer.limit(maxForce);
+    }
+
+    return steer;
+}
