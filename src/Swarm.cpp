@@ -10,6 +10,7 @@ void Swarm::updateAll() {
     for (auto& boid : boids) {
         boid.flock(boids);
         boid.update();
+        boid.edges(1280.0f, 720.0f);
     }
 }
 

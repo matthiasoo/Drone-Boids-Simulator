@@ -11,7 +11,7 @@ Boid::Boid(float x, float y) :
     position(x, y),
     velocity(dist(gen), dist(gen)),
     acceleration(0, 0),
-    maxSpeed(4.0f),
+    maxSpeed(1.0f),
     maxForce(0.1f) {}
 
 void Boid::applyForce(const Vector2D& force) {
@@ -37,6 +37,22 @@ void Boid::flock(const std::vector<Boid>& boids) {
     applyForce(sep);
     applyForce(ali);
     applyForce(coh);
+}
+
+void Boid::edges(float width, float height) {
+    if (position.x > width) position.x = 0;
+    else if (position.x < 0) position.x = width;
+    
+    if (position.y > height) position.y = 0;
+    else if (position.y < 0) position.y = height;
+}
+
+Vector2D Boid::getPosition() const {
+    return position;
+}
+
+Vector2D Boid::getVelocity() const {
+    return velocity;
 }
 
 Vector2D Boid::separate(const std::vector<Boid>& boids) {
