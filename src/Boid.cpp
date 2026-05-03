@@ -25,14 +25,14 @@ void Boid::update() {
     acceleration *= 0;
 }
 
-void Boid::flock(const std::vector<Boid>& boids) {
+void Boid::flock(const std::vector<Boid>& boids, float wSep, float wAli, float wCoh) {
     Vector2D sep = separate(boids);
     Vector2D ali = align(boids);
     Vector2D coh = cohere(boids);
 
-    sep *= 1.5f;
-    ali *= 1.0f;
-    coh *= 1.0f;
+    sep *= wSep;
+    ali *= wAli;
+    coh *= wCoh;
 
     applyForce(sep);
     applyForce(ali);

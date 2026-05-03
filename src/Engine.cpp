@@ -2,11 +2,17 @@
 
 Engine::Engine() : window(sf::VideoMode({1280, 720}), "Drone Swarm Simulator") {
     window.setFramerateLimit(60);
+    ImGui::SFML::Init(window);
+
     for (int i = 0; i < 50; i++) {
         float rx = std::rand() % 1280;
         float ry = std::rand() % 720;
         swarm.addBoid(rx, ry);
     }
+}
+
+Engine::~Engine() {
+    ImGui::SFML::Shutdown();
 }
 
 void Engine::run() {
@@ -19,6 +25,8 @@ void Engine::run() {
 
 void Engine::processEvents() {
     while (const std::optional<sf::Event> event = window.pollEvent()) {
+        ImGui::SFML::ProcessEvent(window, *event);
+
         if (event->is<sf::Event::Closed>()) {
             window.close();
         }
@@ -26,7 +34,17 @@ void Engine::processEvents() {
 }
 
 void Engine::update() {
-    swarm.updateAll();
+    ImGui::SFML::Update(window, deltaClock.restart());
+    ImGui::SetNextWindowPos(ImVec2(5, 5), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(400, 150), ImGuiCond_FirstUseEver);
+
+    ImGui::Begin("Controls");
+    ImGui::SliderFloat("Separation", &weightSep, 0.0f, 5.0f);
+    ImGui::SliderFloat("Alignment", &weightAli, 0.0f, 5.0f);
+    ImGui::SliderFloat("Cohesion", &weightCoh, 0.0f, 5.0f);
+    ImGui::End();
+
+    swarm.updateAll(weightSep, weightAli, weightCoh);
 }
 
 void Engine::render() {
@@ -42,6 +60,8 @@ void Engine::render() {
 
         window.draw(shape);
     }
+
+    ImGui::SFML::Render(window);
 
     window.display();
 }

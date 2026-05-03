@@ -9,6 +9,6 @@ private:
 public:
     Swarm();
     void addBoid(float x, float y);
-    void updateAll();
+    void updateAll(float wSep, float wAli, float wCoh);
     const std::vector<Boid>& getBoids() const;
 };
