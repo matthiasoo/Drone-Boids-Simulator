@@ -11,8 +11,8 @@ Boid::Boid(float x, float y) :
     position(x, y),
     velocity(dist(gen), dist(gen)),
     acceleration(0, 0),
-    maxSpeed(1.0f),
-    maxForce(0.1f) {}
+    maxSpeed(4.0f),
+    maxForce(0.05f) {}
 
 void Boid::applyForce(const Vector2D& force) {
     acceleration += force;

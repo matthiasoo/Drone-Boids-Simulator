@@ -31,10 +31,17 @@ void Engine::update() {
 
 void Engine::render() {
     window.clear(sf::Color::Black);
+
     for (const auto& boid : swarm.getBoids()) {
         sf::CircleShape shape(5.0f, 3);
         shape.setPosition({boid.getPosition().x, boid.getPosition().y});
+
+        Vector2D vel = boid.getVelocity();
+        float angle = std::atan2(vel.y, vel.x) * 180.0f / 3.14159265f;
+        shape.setRotation(sf::degrees(angle + 90.0f));
+
         window.draw(shape);
     }
+
     window.display();
 }

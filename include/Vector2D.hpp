@@ -53,18 +53,19 @@ struct Vector2D {
         return std::sqrt(x*x + y*y);
     }
 
-    Vector2D normalize() const {
+    void normalize() {
         float mag = magnitude();
         if (mag > 0) 
-            return *this / mag;
-        return Vector2D(0, 0);
+            *this /= mag;
+        else {
+            *this = Vector2D(0, 0);
+        }
     }
 
-    Vector2D limit(float max) const {
+    void limit(float max) {
         float mag = magnitude();
         if (mag > max)
-            return (Vector2D(x, y) / mag) * max;
-        return *this;
+            *this = (Vector2D(x, y) / mag) * max;
     }
 
     float distance(const Vector2D& p) const {
