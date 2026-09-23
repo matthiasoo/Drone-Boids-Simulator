@@ -1,4 +1,4 @@
-# 🚁 Drone Swarm Simulator
+# 🚁 Drone Boids Simulator
 
 ![CPP](https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white)
 ![SFML](https://img.shields.io/badge/SFML-8CC445?style=for-the-badge&logo=sfml&logoColor=white)

@@ -25,10 +25,10 @@ void Boid::update() {
     acceleration *= 0;
 }
 
-void Boid::flock(const std::vector<Boid>& boids, float wSep, float wAli, float wCoh) {
-    Vector2D sep = separate(boids);
-    Vector2D ali = align(boids);
-    Vector2D coh = cohere(boids);
+void Boid::flock(const std::vector<Boid>& boids, float wSep, float wAli, float wCoh, float rSep, float rAli, float rCoh) {
+    Vector2D sep = separate(boids, rSep);
+    Vector2D ali = align(boids, rAli);
+    Vector2D coh = cohere(boids, rCoh);
 
     sep *= wSep;
     ali *= wAli;
@@ -55,8 +55,8 @@ Vector2D Boid::getVelocity() const {
     return velocity;
 }
 
-Vector2D Boid::separate(const std::vector<Boid>& boids) {
-    float desiredSeparation = 25.0f;
+Vector2D Boid::separate(const std::vector<Boid>& boids, float radius) {
+    float desiredSeparation = radius;
     Vector2D steer = Vector2D(0, 0);
     int count = 0;
 
@@ -82,8 +82,8 @@ Vector2D Boid::separate(const std::vector<Boid>& boids) {
     return steer;
 }
 
-Vector2D Boid::align(const std::vector<Boid>& boids) {
-    float neighborDist = 50.0f;
+Vector2D Boid::align(const std::vector<Boid>& boids, float radius) {
+    float neighborDist = radius;
     Vector2D steer = Vector2D(0, 0);
     int count = 0;
 
@@ -106,8 +106,8 @@ Vector2D Boid::align(const std::vector<Boid>& boids) {
     return steer;
 }
 
-Vector2D Boid::cohere(const std::vector<Boid>& boids) {
-    float neighborDist = 50.0f;
+Vector2D Boid::cohere(const std::vector<Boid>& boids, float radius) {
+    float neighborDist = radius;
     Vector2D steer = Vector2D(0, 0);
     int count = 0;
 

@@ -14,6 +14,10 @@ private:
     float weightAli = 1.0f;
     float weightCoh = 1.0f;
 
+    float radiusSep = 25.0f;
+    float radiusAli = 50.0f;
+    float radiusCoh = 50.0f;
+
     void processEvents();
     void update();
     void render();

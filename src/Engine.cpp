@@ -36,15 +36,18 @@ void Engine::processEvents() {
 void Engine::update() {
     ImGui::SFML::Update(window, deltaClock.restart());
     ImGui::SetNextWindowPos(ImVec2(5, 5), ImGuiCond_FirstUseEver);
-    ImGui::SetNextWindowSize(ImVec2(400, 150), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(400, 180), ImGuiCond_FirstUseEver);
 
     ImGui::Begin("Controls");
     ImGui::SliderFloat("Separation", &weightSep, 0.0f, 5.0f);
     ImGui::SliderFloat("Alignment", &weightAli, 0.0f, 5.0f);
     ImGui::SliderFloat("Cohesion", &weightCoh, 0.0f, 5.0f);
+    ImGui::SliderFloat("Separation Radius", &radiusSep, 5.0f, 100.0f);
+    ImGui::SliderFloat("Alignment Radius", &radiusAli, 5.0f, 100.0f);
+    ImGui::SliderFloat("Cohesion Radius", &radiusCoh, 5.0f, 100.0f);
     ImGui::End();
 
-    swarm.updateAll(weightSep, weightAli, weightCoh);
+    swarm.updateAll(weightSep, weightAli, weightCoh, radiusSep, radiusAli, radiusCoh);
 }
 
 void Engine::render() {
