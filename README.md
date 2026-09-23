@@ -4,6 +4,9 @@
 ![SFML](https://img.shields.io/badge/SFML-8CC445?style=for-the-badge&logo=sfml&logoColor=white)
 ![CMAKE](https://img.shields.io/badge/CMake-064F8A?style=for-the-badge&logo=cmake&logoColor=white)
 
+<p align="center">
+  <img src="readme_files/gui.png" alt="Graphical User Interface" />
+</p>
 
 ## 📝 Overview
 This project is an interactive 2D physics simulation of flocking behavior, modeled after Craig Reynolds' classic Boids algorithm. It simulates a swarm of autonomous drones navigating a shared environment without centralized control.
